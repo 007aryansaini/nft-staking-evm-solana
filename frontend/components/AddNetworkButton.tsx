@@ -18,7 +18,7 @@ export default function AddNetworkButton({ network, chainId = 'sepolia' }: AddNe
       if (typeof window === 'undefined' || !window.ethereum) {
         toast.error('MetaMask is not installed', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
         return;
       }
@@ -38,13 +38,13 @@ export default function AddNetworkButton({ network, chainId = 'sepolia' }: AddNe
         toast.dismiss(toastId);
         toast.success(`Successfully added ${chainId === 'sepolia' ? 'Sepolia' : 'Base'} network!`, {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       } catch (error: any) {
         toast.dismiss(toastId);
         toast.error(error?.message || 'Failed to add network', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       } finally {
         setIsAdding(false);
@@ -54,8 +54,7 @@ export default function AddNetworkButton({ network, chainId = 'sepolia' }: AddNe
       // But we can show instructions
       toast.error('Phantom doesn\'t support programmatic network switching', {
         position: 'top-right',
-        autoClose: 5000,
-        description: 'Please switch to Devnet manually in Phantom settings',
+        duration: 5000,
       });
     }
   };

@@ -78,7 +78,7 @@ export function useEVMStaking() {
     if (!address || !isConnected) {
       toast.error('Please connect your wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -86,7 +86,7 @@ export function useEVMStaking() {
     if (!tokenId || isNaN(parseInt(tokenId))) {
       toast.error('Invalid token ID', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -94,7 +94,7 @@ export function useEVMStaking() {
     if (!publicClient || !walletClient) {
       toast.error('Wallet client not ready', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -118,7 +118,7 @@ export function useEVMStaking() {
         toast.dismiss(toastId);
         toast.error('This NFT is already staked', {
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
         setIsLoading(false);
         setButtonText('');
@@ -162,7 +162,7 @@ export function useEVMStaking() {
         toast.success('NFT approved successfully!', {
           id: toastId,
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
       }
 
@@ -191,7 +191,7 @@ export function useEVMStaking() {
       toast.success('NFT staked successfully!', {
         id: toastId,
         position: 'top-right',
-        autoClose: 5000,
+        duration: 5000,
       });
 
       // Refresh data
@@ -207,12 +207,12 @@ export function useEVMStaking() {
       if (error?.message?.includes('User rejected')) {
         toast.error('Transaction rejected by user', {
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
       } else {
         toast.error(error?.message || 'Failed to stake NFT', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       }
       
@@ -226,7 +226,7 @@ export function useEVMStaking() {
     if (!address || !isConnected) {
       toast.error('Please connect your wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -234,7 +234,7 @@ export function useEVMStaking() {
     if (!publicClient) {
       toast.error('Wallet client not ready', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -264,7 +264,7 @@ export function useEVMStaking() {
       toast.success('NFT unstaked successfully!', {
         id: toastId,
         position: 'top-right',
-        autoClose: 5000,
+        duration: 5000,
       });
 
       await refetchStakedTokens();
@@ -279,12 +279,12 @@ export function useEVMStaking() {
       if (error?.message?.includes('User rejected')) {
         toast.error('Transaction rejected by user', {
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
       } else {
         toast.error(error?.message || 'Failed to unstake NFT', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       }
       
@@ -298,7 +298,7 @@ export function useEVMStaking() {
     if (!address || !isConnected) {
       toast.error('Please connect your wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -306,7 +306,7 @@ export function useEVMStaking() {
     if (parseFloat(pendingRewards) === 0) {
       toast.error('No rewards to claim', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -314,7 +314,7 @@ export function useEVMStaking() {
     if (!publicClient) {
       toast.error('Wallet client not ready', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -343,7 +343,7 @@ export function useEVMStaking() {
       toast.success('Rewards claimed successfully!', {
         id: toastId,
         position: 'top-right',
-        autoClose: 5000,
+        duration: 5000,
       });
 
       await refetchRewards();
@@ -357,12 +357,12 @@ export function useEVMStaking() {
       if (error?.message?.includes('User rejected')) {
         toast.error('Transaction rejected by user', {
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
       } else {
         toast.error(error?.message || 'Failed to claim rewards', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       }
       

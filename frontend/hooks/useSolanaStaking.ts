@@ -39,7 +39,7 @@ export function useSolanaStaking() {
     try {
       setIsRefreshing(true);
       const response = await apiService.getStakingStatus(walletAddress);
-      if (response.success) {
+      if (response.success && response.data) {
         setStakingStatus(response.data);
       }
     } catch (error: any) {
@@ -63,7 +63,7 @@ export function useSolanaStaking() {
     if (!publicKey || !signTransaction || !sendTransaction || !connected) {
       toast.error('Please connect your Phantom wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -125,7 +125,7 @@ export function useSolanaStaking() {
       toast.dismiss(toastId);
       toast.success('Transaction confirmed! Recording stake...', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       setStakeButtonText('Recording stake...');
 
@@ -135,7 +135,7 @@ export function useSolanaStaking() {
       if (stakeResponse.success) {
         toast.success('NFT staked successfully!', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
         // Immediately refresh status
         await fetchStatus();
@@ -152,12 +152,12 @@ export function useSolanaStaking() {
       if (error?.message?.includes('User rejected') || error?.message?.includes('User cancelled')) {
         toast.error('Transaction cancelled by user', {
           position: 'top-right',
-          autoClose: 3000,
+          duration: 3000,
         });
       } else {
         toast.error(error?.message || 'Failed to stake NFT', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
       }
       
@@ -171,7 +171,7 @@ export function useSolanaStaking() {
     if (!publicKey || !connected) {
       toast.error('Please connect your Phantom wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -179,7 +179,7 @@ export function useSolanaStaking() {
     if (!stakingStatus?.isStaked) {
       toast.error('No active stake found', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -197,7 +197,7 @@ export function useSolanaStaking() {
         toast.dismiss(toastId);
         toast.success('NFT unstaked successfully!', {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
         // Immediately refresh status
         await fetchStatus();
@@ -212,7 +212,7 @@ export function useSolanaStaking() {
       toast.dismiss(toastId);
       toast.error(error?.message || 'Failed to unstake NFT', {
         position: 'top-right',
-        autoClose: 5000,
+        duration: 5000,
       });
       
       setIsUnstaking(false);
@@ -227,7 +227,7 @@ export function useSolanaStaking() {
     if (!publicKey || !connected) {
       toast.error('Please connect your Phantom wallet', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -235,7 +235,7 @@ export function useSolanaStaking() {
     if (!stakingStatus?.isStaked) {
       toast.error('No active stake found', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -243,7 +243,7 @@ export function useSolanaStaking() {
     if ((stakingStatus.rewards.pendingRewards || 0) <= 0) {
       toast.error('No rewards to claim', {
         position: 'top-right',
-        autoClose: 3000,
+        duration: 3000,
       });
       return;
     }
@@ -258,11 +258,11 @@ export function useSolanaStaking() {
       // Update backend to mark rewards as claimed
       const claimResponse = await apiService.claimRewards(walletAddress);
       
-      if (claimResponse.success) {
+      if (claimResponse.success && claimResponse.data) {
         toast.dismiss(toastId);
         toast.success(`Rewards claimed! ${claimResponse.data.rewardAmount} SOL recorded.`, {
           position: 'top-right',
-          autoClose: 5000,
+          duration: 5000,
         });
         // Immediately refresh status to update rewards
         await fetchStatus();
@@ -277,7 +277,7 @@ export function useSolanaStaking() {
       toast.dismiss(toastId);
       toast.error(error?.message || 'Failed to claim rewards', {
         position: 'top-right',
-        autoClose: 5000,
+        duration: 5000,
       });
       
       setIsClaiming(false);

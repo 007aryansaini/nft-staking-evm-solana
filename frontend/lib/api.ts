@@ -28,6 +28,12 @@ export interface CreateStakingTxResponse {
   };
 }
 
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
 class ApiService {
   private baseUrl: string;
 
@@ -66,8 +72,8 @@ class ApiService {
     );
   }
 
-  async stake(walletAddress: string, transactionSignature: string) {
-    return this.request(
+  async stake(walletAddress: string, transactionSignature: string): Promise<ApiResponse> {
+    return this.request<ApiResponse>(
       API_CONFIG.ENDPOINTS.STAKE,
       {
         method: 'POST',
@@ -76,8 +82,8 @@ class ApiService {
     );
   }
 
-  async unstake(walletAddress: string) {
-    return this.request(
+  async unstake(walletAddress: string): Promise<ApiResponse> {
+    return this.request<ApiResponse>(
       API_CONFIG.ENDPOINTS.UNSTAKE,
       {
         method: 'POST',
@@ -86,8 +92,8 @@ class ApiService {
     );
   }
 
-  async claimRewards(walletAddress: string) {
-    return this.request(
+  async claimRewards(walletAddress: string): Promise<ApiResponse<{ rewardAmount: number }>> {
+    return this.request<ApiResponse<{ rewardAmount: number }>>(
       API_CONFIG.ENDPOINTS.CLAIM_REWARDS,
       {
         method: 'POST',
@@ -96,8 +102,8 @@ class ApiService {
     );
   }
 
-  async getPendingRewards(walletAddress: string) {
-    return this.request(
+  async getPendingRewards(walletAddress: string): Promise<ApiResponse> {
+    return this.request<ApiResponse>(
       `${API_CONFIG.ENDPOINTS.PENDING_REWARDS}/${walletAddress}`
     );
   }
