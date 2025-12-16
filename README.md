@@ -4,7 +4,9 @@ A decentralized application for staking NFTs on both EVM (Ethereum Sepolia) and 
 
 ## Demo Video
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5ADZyAxjkuY" title="Multi-Chain NFT Staking dApp Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Multi-Chain NFT Staking dApp Demo](https://img.youtube.com/vi/5ADZyAxjkuY/0.jpg)](https://www.youtube.com/watch?v=5ADZyAxjkuY)
+
+Click the thumbnail above to watch the demo video on YouTube.
 
 ## Project Overview
 
