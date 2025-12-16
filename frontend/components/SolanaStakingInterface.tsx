@@ -55,6 +55,7 @@ export default function SolanaStakingInterface() {
             label: claimButtonText || 'Claim Rewards',
             onClick: handleClaimRewards,
             disabled: isClaiming || pendingRewards <= 0 || !isStaked,
+            variant: 'primary',
           }}
         />
         <StakingCard
@@ -94,7 +95,7 @@ export default function SolanaStakingInterface() {
             </div>
             <button
               onClick={handleStake}
-              disabled={isStaking || isUnstaking || isClaiming || isStaked}
+              disabled={isStaking || isStaked}
               className="w-full py-2.5 px-3 bg-gradient-to-r from-[#9333ea] to-[#7e22ce] hover:from-[#7e22ce] hover:to-[#6b21a8] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/30 hover:shadow-xl cursor-pointer"
             >
               {isStaking ? (
@@ -126,7 +127,7 @@ export default function SolanaStakingInterface() {
             </div>
             <button
               onClick={handleUnstake}
-              disabled={isStaking || isUnstaking || isClaiming || !isStaked}
+              disabled={isUnstaking || !isStaked}
               className="w-full py-2.5 px-3 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl cursor-pointer"
             >
               {isUnstaking ? (

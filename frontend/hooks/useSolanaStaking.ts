@@ -266,6 +266,10 @@ export function useSolanaStaking() {
         });
         // Immediately refresh status to update rewards
         await fetchStatus();
+        // Force another refresh after a short delay to ensure backend has updated
+        setTimeout(async () => {
+          await fetchStatus();
+        }, 1000);
       } else {
         throw new Error(claimResponse.error || 'Failed to claim rewards');
       }

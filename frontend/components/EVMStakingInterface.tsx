@@ -13,8 +13,12 @@ export default function EVMStakingInterface() {
     stakedTokens,
     pendingRewards,
     totalClaimed,
-    isLoading,
-    buttonText,
+    isStaking,
+    isUnstaking,
+    isClaiming,
+    stakeButtonText,
+    unstakeButtonText,
+    claimButtonText,
     handleStake,
     handleUnstake,
     handleClaimRewards,
@@ -48,9 +52,9 @@ export default function EVMStakingInterface() {
           network="evm"
           gradient="green"
           action={{
-            label: buttonText || 'Claim Rewards',
+            label: claimButtonText || 'Claim Rewards',
             onClick: handleClaimRewards,
-            disabled: isLoading || parseFloat(pendingRewards) === 0,
+            disabled: isClaiming || parseFloat(pendingRewards) === 0,
           }}
         />
         <StakingCard
@@ -97,10 +101,17 @@ export default function EVMStakingInterface() {
                 handleStake(tokenId);
                 setTokenId('');
               }}
-              disabled={isLoading || !tokenId}
+              disabled={isStaking || !tokenId}
               className="w-full py-2.5 px-3 bg-gradient-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30 hover:shadow-xl"
             >
-              {buttonText || 'Stake NFT'}
+              {isStaking ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  {stakeButtonText || 'Processing...'}
+                </span>
+              ) : (
+                'Stake NFT'
+              )}
             </button>
           </div>
         </div>
@@ -136,10 +147,17 @@ export default function EVMStakingInterface() {
                 handleUnstake(unstakeTokenId);
                 setUnstakeTokenId('');
               }}
-              disabled={isLoading || !unstakeTokenId || stakedTokens.length === 0}
+              disabled={isUnstaking || !unstakeTokenId || stakedTokens.length === 0}
               className="w-full py-2.5 px-3 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl"
             >
-              {buttonText || 'Unstake NFT'}
+              {isUnstaking ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  {unstakeButtonText || 'Processing...'}
+                </span>
+              ) : (
+                'Unstake NFT'
+              )}
             </button>
           </div>
         </div>

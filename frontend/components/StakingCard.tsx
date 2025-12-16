@@ -66,7 +66,7 @@ export default function StakingCard({
               : `bg-gradient-to-r ${gradientClasses[gradient]} hover:shadow-xl text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-${gradient === 'blue' ? 'blue' : gradient === 'purple' ? 'purple' : 'green'}-500/30`
           }`}
         >
-          {action.disabled && action.label.includes('...') ? (
+          {action.disabled && (action.label.includes('...') || action.label.includes('Waiting') || action.label.includes('Claiming') || action.label.includes('Processing')) ? (
             <span className="flex items-center justify-center gap-2">
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
               {action.label}

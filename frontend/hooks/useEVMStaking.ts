@@ -19,8 +19,16 @@ export function useEVMStaking() {
   const [stakedTokens, setStakedTokens] = useState<bigint[]>([]);
   const [pendingRewards, setPendingRewards] = useState<string>('0');
   const [totalClaimed, setTotalClaimed] = useState<string>('0');
-  const [isLoading, setIsLoading] = useState(false);
-  const [buttonText, setButtonText] = useState('');
+  
+  // Separate loading states for each action
+  const [isStaking, setIsStaking] = useState(false);
+  const [isUnstaking, setIsUnstaking] = useState(false);
+  const [isClaiming, setIsClaiming] = useState(false);
+  
+  // Separate button text for each action
+  const [stakeButtonText, setStakeButtonText] = useState('');
+  const [unstakeButtonText, setUnstakeButtonText] = useState('');
+  const [claimButtonText, setClaimButtonText] = useState('');
 
   // Read contract functions
   const { data: stakedTokensData, refetch: refetchStakedTokens } = useReadContract({
@@ -44,7 +52,7 @@ export function useEVMStaking() {
     },
   });
 
-  const { data: totalClaimedData } = useReadContract({
+  const { data: totalClaimedData, refetch: refetchTotalClaimed } = useReadContract({
     address: EVM_CONFIG.STAKING_CONTRACT as `0x${string}`,
     abi: NFT_STAKING_ABI,
     functionName: 'totalClaimedRewards',
@@ -99,8 +107,8 @@ export function useEVMStaking() {
       return;
     }
 
-    setIsLoading(true);
-    setButtonText('Checking approval...');
+    setIsStaking(true);
+    setStakeButtonText('Checking approval...');
     const toastId = toast.loading('Checking NFT approval...', {
       position: 'top-right',
     });
@@ -120,8 +128,8 @@ export function useEVMStaking() {
           position: 'top-right',
           duration: 3000,
         });
-        setIsLoading(false);
-        setButtonText('');
+        setIsStaking(false);
+        setStakeButtonText('');
         return;
       }
 
@@ -142,7 +150,7 @@ export function useEVMStaking() {
           id: toastId,
           position: 'top-right',
         });
-        setButtonText('Approving NFT...');
+        setStakeButtonText('Approving NFT...');
 
         const approveHash = await writeContractAsync({
           address: EVM_CONFIG.NFT_COLLECTION as `0x${string}`,
@@ -155,7 +163,7 @@ export function useEVMStaking() {
           id: toastId,
           position: 'top-right',
         });
-        setButtonText('Waiting for confirmation...');
+        setStakeButtonText('Waiting for confirmation...');
 
         await publicClient.waitForTransactionReceipt({ hash: approveHash });
 
@@ -171,7 +179,7 @@ export function useEVMStaking() {
         id: toastId,
         position: 'top-right',
       });
-      setButtonText('Staking NFT...');
+      setStakeButtonText('Staking NFT...');
 
       const stakeHash = await writeContractAsync({
         address: stakingAddress,
@@ -184,7 +192,7 @@ export function useEVMStaking() {
         id: toastId,
         position: 'top-right',
       });
-      setButtonText('Waiting for confirmation...');
+      setStakeButtonText('Waiting for confirmation...');
 
       await publicClient.waitForTransactionReceipt({ hash: stakeHash });
 
@@ -198,8 +206,8 @@ export function useEVMStaking() {
       await refetchStakedTokens();
       await refetchRewards();
 
-      setIsLoading(false);
-      setButtonText('');
+      setIsStaking(false);
+      setStakeButtonText('');
     } catch (error: any) {
       console.error('Stake error:', error);
       toast.dismiss(toastId);
@@ -216,8 +224,8 @@ export function useEVMStaking() {
         });
       }
       
-      setIsLoading(false);
-      setButtonText('');
+      setIsStaking(false);
+      setStakeButtonText('');
     }
   }, [address, isConnected, publicClient, walletClient, writeContractAsync, refetchStakedTokens, refetchRewards]);
 
@@ -239,8 +247,8 @@ export function useEVMStaking() {
       return;
     }
 
-    setIsLoading(true);
-    setButtonText('Unstaking NFT...');
+    setIsUnstaking(true);
+    setUnstakeButtonText('Unstaking NFT...');
     const toastId = toast.loading('Unstaking NFT...', {
       position: 'top-right',
     });
@@ -257,7 +265,7 @@ export function useEVMStaking() {
         id: toastId,
         position: 'top-right',
       });
-      setButtonText('Waiting for confirmation...');
+      setUnstakeButtonText('Waiting for confirmation...');
 
       await publicClient.waitForTransactionReceipt({ hash: unstakeHash });
 
@@ -270,8 +278,8 @@ export function useEVMStaking() {
       await refetchStakedTokens();
       await refetchRewards();
 
-      setIsLoading(false);
-      setButtonText('');
+      setIsUnstaking(false);
+      setUnstakeButtonText('');
     } catch (error: any) {
       console.error('Unstake error:', error);
       toast.dismiss(toastId);
@@ -288,8 +296,8 @@ export function useEVMStaking() {
         });
       }
       
-      setIsLoading(false);
-      setButtonText('');
+      setIsUnstaking(false);
+      setUnstakeButtonText('');
     }
   }, [address, isConnected, publicClient, writeContractAsync, refetchStakedTokens, refetchRewards]);
 
@@ -319,8 +327,8 @@ export function useEVMStaking() {
       return;
     }
 
-    setIsLoading(true);
-    setButtonText('Claiming rewards...');
+    setIsClaiming(true);
+    setClaimButtonText('Claiming rewards...');
     const toastId = toast.loading('Claiming rewards...', {
       position: 'top-right',
     });
@@ -336,7 +344,7 @@ export function useEVMStaking() {
         id: toastId,
         position: 'top-right',
       });
-      setButtonText('Waiting for confirmation...');
+      setClaimButtonText('Waiting for confirmation...');
 
       await publicClient.waitForTransactionReceipt({ hash: claimHash });
 
@@ -346,10 +354,19 @@ export function useEVMStaking() {
         duration: 5000,
       });
 
+      // Immediately refetch all data to update UI
+      await Promise.all([
+        refetchRewards(),
+        refetchTotalClaimed(),
+        refetchStakedTokens(),
+      ]);
+      
+      // Force a small delay and refetch again to ensure state updates
+      await new Promise(resolve => setTimeout(resolve, 500));
       await refetchRewards();
 
-      setIsLoading(false);
-      setButtonText('');
+      setIsClaiming(false);
+      setClaimButtonText('');
     } catch (error: any) {
       console.error('Claim error:', error);
       toast.dismiss(toastId);
@@ -366,10 +383,10 @@ export function useEVMStaking() {
         });
       }
       
-      setIsLoading(false);
-      setButtonText('');
+      setIsClaiming(false);
+      setClaimButtonText('');
     }
-  }, [address, isConnected, pendingRewards, publicClient, writeContractAsync, refetchRewards]);
+  }, [address, isConnected, pendingRewards, publicClient, writeContractAsync, refetchRewards, refetchTotalClaimed, refetchStakedTokens]);
 
   return {
     address,
@@ -377,8 +394,12 @@ export function useEVMStaking() {
     stakedTokens: stakedTokens.map(t => t.toString()),
     pendingRewards,
     totalClaimed,
-    isLoading,
-    buttonText,
+    isStaking,
+    isUnstaking,
+    isClaiming,
+    stakeButtonText,
+    unstakeButtonText,
+    claimButtonText,
     handleStake,
     handleUnstake,
     handleClaimRewards,
