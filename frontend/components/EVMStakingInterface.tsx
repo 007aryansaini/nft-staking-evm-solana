@@ -38,20 +38,15 @@ export default function EVMStakingInterface() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StakingCard
           title="Pending Rewards"
           value={pendingRewards}
           subtitle="Reward Tokens"
           network="evm"
           gradient="green"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
           action={{
             label: buttonText || 'Claim Rewards',
             onClick: handleClaimRewards,
@@ -64,11 +59,6 @@ export default function EVMStakingInterface() {
           subtitle="Lifetime Rewards"
           network="evm"
           gradient="blue"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
         />
         <StakingCard
           title="Staked NFTs"
@@ -76,29 +66,19 @@ export default function EVMStakingInterface() {
           subtitle="Active Stakes"
           network="evm"
           gradient="purple"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-          }
         />
       </div>
 
       {/* Staking Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Stake NFT */}
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3b82f6] to-[#2563eb] flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white">Stake NFT</h3>
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-white">Stake NFT</h3>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-[#9ca3af] mb-3 uppercase tracking-wide">
+              <label className="block text-xs font-semibold text-[#9ca3af] mb-2 uppercase tracking-wide">
                 Token ID
               </label>
               <input
@@ -106,7 +86,7 @@ export default function EVMStakingInterface() {
                 value={tokenId}
                 onChange={(e) => setTokenId(e.target.value)}
                 placeholder="Enter NFT token ID"
-                className="w-full px-4 py-3.5 bg-[#0a0a0f] border border-[#1f2937] rounded-xl text-white placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1f2937] rounded-lg text-sm text-white placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
               />
             </div>
             <button
@@ -118,7 +98,7 @@ export default function EVMStakingInterface() {
                 setTokenId('');
               }}
               disabled={isLoading || !tokenId}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30 hover:shadow-xl"
+              className="w-full py-2.5 px-3 bg-gradient-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30 hover:shadow-xl"
             >
               {buttonText || 'Stake NFT'}
             </button>
@@ -126,24 +106,19 @@ export default function EVMStakingInterface() {
         </div>
 
         {/* Unstake NFT */}
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ef4444] to-[#dc2626] flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white">Unstake NFT</h3>
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-white">Unstake NFT</h3>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-[#9ca3af] mb-3 uppercase tracking-wide">
+              <label className="block text-xs font-semibold text-[#9ca3af] mb-2 uppercase tracking-wide">
                 Select NFT
               </label>
               <select
                 value={unstakeTokenId}
                 onChange={(e) => setUnstakeTokenId(e.target.value)}
-                className="w-full px-4 py-3.5 bg-[#0a0a0f] border border-[#1f2937] rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
+                className="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#1f2937] rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all"
               >
                 <option value="">Select staked NFT</option>
                 {stakedTokens.map((id) => (
@@ -162,7 +137,7 @@ export default function EVMStakingInterface() {
                 setUnstakeTokenId('');
               }}
               disabled={isLoading || !unstakeTokenId || stakedTokens.length === 0}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl"
+              className="w-full py-2.5 px-3 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl"
             >
               {buttonText || 'Unstake NFT'}
             </button>
@@ -172,29 +147,24 @@ export default function EVMStakingInterface() {
 
       {/* Staked NFTs List */}
       {stakedTokens.length > 0 && (
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#9333ea] to-[#7e22ce] flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white">Your Staked NFTs</h3>
-            <span className="ml-auto px-3 py-1 bg-[#1f2937] text-[#9ca3af] text-sm font-semibold rounded-lg">
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-base font-bold text-white">Your Staked NFTs</h3>
+            <span className="px-2 py-1 bg-[#1f2937] text-[#9ca3af] text-xs font-semibold rounded-lg">
               {stakedTokens.length} {stakedTokens.length === 1 ? 'NFT' : 'NFTs'}
             </span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {stakedTokens.map((id) => (
               <div
                 key={id}
-                className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5 text-center hover:border-[#3b82f6] transition-all card-hover group"
+                className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-3 text-center hover:border-[#3b82f6] transition-all card-hover group"
               >
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-br from-[#3b82f6] to-[#9333ea] flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <span className="text-white font-bold text-lg">#{id}</span>
+                <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-gradient-to-br from-[#3b82f6] to-[#9333ea] flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <span className="text-white font-bold text-sm">#{id}</span>
                 </div>
                 <p className="text-xs text-[#6b7280] uppercase tracking-wide">Token ID</p>
-                <p className="text-sm font-semibold text-white mt-1">{id}</p>
+                <p className="text-xs font-semibold text-white mt-1">{id}</p>
               </div>
             ))}
           </div>
@@ -202,23 +172,23 @@ export default function EVMStakingInterface() {
       )}
 
       {/* Contract Info */}
-      <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-        <h3 className="text-xl font-bold text-white mb-6">Contract Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-            <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Staking Contract</p>
+      <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+        <h3 className="text-base font-bold text-white mb-4">Contract Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+            <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Staking Contract</p>
             <a
               href={`${EVM_CONFIG.EXPLORER_URL}/address/${EVM_CONFIG.STAKING_CONTRACT}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#60a5fa] hover:text-[#93c5fd] font-mono text-sm break-all transition-colors"
+              className="text-[#60a5fa] hover:text-[#93c5fd] font-mono text-xs break-all transition-colors"
             >
               {formatAddress(EVM_CONFIG.STAKING_CONTRACT)}
             </a>
           </div>
-          <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-            <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Reward Rate</p>
-            <p className="text-white font-semibold text-lg">{EVM_CONFIG.REWARD_RATE} tokens/sec per NFT</p>
+          <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+            <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Reward Rate</p>
+            <p className="text-white font-semibold text-sm">{EVM_CONFIG.REWARD_RATE} tokens/sec per NFT</p>
           </div>
         </div>
       </div>

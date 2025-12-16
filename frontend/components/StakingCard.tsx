@@ -37,25 +37,18 @@ export default function StakingCard({
   };
 
   return (
-    <div className="glass rounded-2xl p-6 card-hover border border-[#1f2937] shadow-xl">
-      <div className="flex items-start justify-between mb-6">
+    <div className="glass rounded-xl p-4 card-hover border border-[#1f2937] shadow-xl">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
-          <div className="flex items-center gap-3 mb-3">
-            {icon && (
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradientClasses[gradient]} flex items-center justify-center shadow-lg`}>
-                {icon}
-              </div>
-            )}
-            <div>
-              <h3 className="text-sm font-medium text-[#9ca3af] uppercase tracking-wide">{title}</h3>
-            </div>
+          <div className="mb-2">
+            <h3 className="text-xs font-medium text-[#9ca3af] uppercase tracking-wide">{title}</h3>
           </div>
           <div className="mb-2">
-            <p className="text-3xl font-bold text-white">
+            <p className="text-2xl font-bold text-white">
               {typeof value === 'number' ? formatNumber(value) : value}
             </p>
             {subtitle && (
-              <p className="text-sm text-[#6b7280] mt-1">{subtitle}</p>
+              <p className="text-xs text-[#6b7280] mt-1">{subtitle}</p>
             )}
           </div>
         </div>
@@ -65,7 +58,7 @@ export default function StakingCard({
         <button
           onClick={action.onClick}
           disabled={action.disabled}
-          className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 text-sm shadow-lg cursor-pointer ${
+          className={`w-full py-2.5 px-3 rounded-lg font-semibold transition-all duration-200 text-xs shadow-lg cursor-pointer ${
             action.variant === 'danger'
               ? 'bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-red-500/20'
               : action.variant === 'secondary'

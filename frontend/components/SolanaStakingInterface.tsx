@@ -42,20 +42,15 @@ export default function SolanaStakingInterface() {
   const rewardAmount = SOLANA_CONFIG.REWARD_AMOUNT;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StakingCard
           title="Pending Rewards"
           value={pendingRewards}
           subtitle="SOL Tokens"
           network="solana"
           gradient="green"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
           action={{
             label: claimButtonText || 'Claim Rewards',
             onClick: handleClaimRewards,
@@ -68,11 +63,6 @@ export default function SolanaStakingInterface() {
           subtitle="Lifetime Rewards"
           network="solana"
           gradient="purple"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
         />
         <StakingCard
           title="Staking Status"
@@ -80,42 +70,32 @@ export default function SolanaStakingInterface() {
           subtitle={isStaked ? 'Currently Staked' : 'Not Staked'}
           network="solana"
           gradient="blue"
-          icon={
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
         />
       </div>
 
       {/* Staking Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Stake */}
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#9333ea] to-[#7e22ce] flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white">Stake NFT</h3>
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-white">Stake NFT</h3>
           </div>
-          <div className="space-y-5">
-            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
+          <div className="space-y-4">
+            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-[#6b7280] uppercase tracking-wide">Staking Fee</p>
-                <div className="px-3 py-1 bg-gradient-to-r from-[#9333ea] to-[#7e22ce] rounded-lg">
-                  <p className="text-white font-bold text-lg">{stakingFee} SOL</p>
+                <p className="text-xs text-[#6b7280] uppercase tracking-wide">Staking Fee</p>
+                <div className="px-2 py-1 bg-gradient-to-r from-[#9333ea] to-[#7e22ce] rounded-lg">
+                  <p className="text-white font-bold text-sm">{stakingFee} SOL</p>
                 </div>
               </div>
-              <p className="text-xs text-[#6b7280] mt-3">
+              <p className="text-xs text-[#6b7280] mt-2">
                 This fee will be transferred to the reward address when you stake
               </p>
             </div>
             <button
               onClick={handleStake}
               disabled={isStaking || isUnstaking || isClaiming || isStaked}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-[#9333ea] to-[#7e22ce] hover:from-[#7e22ce] hover:to-[#6b21a8] text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/30 hover:shadow-xl cursor-pointer"
+              className="w-full py-2.5 px-3 bg-gradient-to-r from-[#9333ea] to-[#7e22ce] hover:from-[#7e22ce] hover:to-[#6b21a8] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-500/30 hover:shadow-xl cursor-pointer"
             >
               {isStaking ? (
                 <span className="flex items-center justify-center gap-2">
@@ -130,21 +110,16 @@ export default function SolanaStakingInterface() {
         </div>
 
         {/* Unstake */}
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ef4444] to-[#dc2626] flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white">Unstake NFT</h3>
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <div className="mb-4">
+            <h3 className="text-base font-bold text-white">Unstake NFT</h3>
           </div>
-          <div className="space-y-5">
-            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-              <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Current Status</p>
+          <div className="space-y-4">
+            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+              <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Current Status</p>
               <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${isStaked ? 'bg-[#10b981]' : 'bg-[#6b7280]'}`}></div>
-                <p className="text-lg font-semibold text-white">
+                <div className={`w-2 h-2 rounded-full ${isStaked ? 'bg-[#10b981]' : 'bg-[#6b7280]'}`}></div>
+                <p className="text-sm font-semibold text-white">
                   {isStaked ? 'Staked' : 'Not Staked'}
                 </p>
               </div>
@@ -152,7 +127,7 @@ export default function SolanaStakingInterface() {
             <button
               onClick={handleUnstake}
               disabled={isStaking || isUnstaking || isClaiming || !isStaked}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-xl font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl cursor-pointer"
+              className="w-full py-2.5 px-3 bg-gradient-to-r from-[#ef4444] to-[#dc2626] hover:from-[#dc2626] hover:to-[#b91c1c] text-white rounded-lg text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-500/20 hover:shadow-xl cursor-pointer"
             >
               {isUnstaking ? (
                 <span className="flex items-center justify-center gap-2">
@@ -169,37 +144,37 @@ export default function SolanaStakingInterface() {
 
       {/* Staking Details */}
       {stakingStatus && (
-        <div className="glass rounded-2xl p-8 border border-[#1f2937] shadow-xl">
-          <h3 className="text-xl font-bold text-white mb-6">Staking Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="glass rounded-xl p-5 border border-[#1f2937] shadow-xl">
+          <h3 className="text-base font-bold text-white mb-4">Staking Details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {stakingStatus.stakingRecord && (
               <>
-                <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-                  <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Transaction</p>
+                <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+                  <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Transaction</p>
                   <a
                     href={`${SOLANA_CONFIG.EXPLORER_URL}/tx/${stakingStatus.stakingRecord.transactionSignature}?cluster=devnet`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#a78bfa] hover:text-[#c4b5fd] font-mono text-sm break-all transition-colors"
+                    className="text-[#a78bfa] hover:text-[#c4b5fd] font-mono text-xs break-all transition-colors"
                   >
                     {formatAddress(stakingStatus.stakingRecord.transactionSignature)}
                   </a>
                 </div>
-                <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-                  <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Staked Since</p>
-                  <p className="text-white font-semibold">
+                <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+                  <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Staked Since</p>
+                  <p className="text-white font-semibold text-sm">
                     {new Date(stakingStatus.stakingRecord.timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </>
             )}
-            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-              <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Reward Amount</p>
-              <p className="text-white font-semibold text-lg">{rewardAmount} SOL</p>
+            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+              <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Reward Amount</p>
+              <p className="text-white font-semibold text-sm">{rewardAmount} SOL</p>
             </div>
-            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-xl p-5">
-              <p className="text-sm text-[#6b7280] mb-2 uppercase tracking-wide">Network</p>
-              <p className="text-white font-semibold">Solana Devnet</p>
+            <div className="bg-[#0a0a0f] border border-[#1f2937] rounded-lg p-4">
+              <p className="text-xs text-[#6b7280] mb-2 uppercase tracking-wide">Network</p>
+              <p className="text-white font-semibold text-sm">Solana Devnet</p>
             </div>
           </div>
         </div>
