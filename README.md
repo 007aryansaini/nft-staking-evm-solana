@@ -2,6 +2,10 @@
 
 A decentralized application for staking NFTs on both EVM (Ethereum Sepolia) and Solana (Devnet) networks. Users can stake/unstake NFTs, track rewards, and claim rewards through a unified interface.
 
+## Demo Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5ADZyAxjkuY" title="Multi-Chain NFT Staking dApp Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Project Overview
 
 This project consists of three main components:
