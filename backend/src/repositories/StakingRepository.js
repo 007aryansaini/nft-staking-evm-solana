@@ -117,5 +117,26 @@ export class StakingRepository {
   async findAll() {
     return await this.readAll();
   }
+
+  /**
+   * Deletes a record by wallet address and transaction signature
+   * @param {string} walletAddress
+   * @param {string} transactionSignature
+   * @returns {Promise<boolean>}
+   */
+  async delete(walletAddress, transactionSignature) {
+    const records = await this.readAll();
+    const initialLength = records.length;
+    const filtered = records.filter(
+      r => !(r.walletAddress === walletAddress && r.transactionSignature === transactionSignature)
+    );
+    
+    if (filtered.length === initialLength) {
+      return false; // Record not found
+    }
+    
+    await this.writeAll(filtered);
+    return true;
+  }
 }
 

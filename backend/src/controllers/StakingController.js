@@ -88,6 +88,9 @@ export class StakingController {
   /**
    * Handle claim rewards request
    * POST /api/solana/claim-rewards
+   * Updates the staking record to mark rewards as claimed
+   * Note: In a real implementation, you'd need the reward address private key to send SOL
+   * For this demo, we just update the backend record
    */
   claimRewards = async (req, res) => {
     try {
@@ -100,16 +103,15 @@ export class StakingController {
         });
       }
 
-      const transaction = await this.stakingService.claimRewards(walletAddress);
-      const serialized = this.solanaService.serializeTransaction(transaction);
+      // Use the staking service to claim rewards
+      const result = await this.stakingService.claimRewards(walletAddress);
 
       res.json({
         success: true,
         data: {
-          transaction: {
-            serialized: serialized.toString('base64'),
-            message: 'Reward transaction created. Sign and submit to claim rewards.',
-          },
+          record: result,
+          message: 'Rewards claimed successfully. In production, 0.0005 SOL would be sent to your wallet.',
+          rewardAmount: 0.0005,
         },
       });
     } catch (error) {
@@ -181,30 +183,26 @@ export class StakingController {
   /**
    * Handle create staking transaction request
    * POST /api/solana/create-staking-transaction
+   * Returns reward address and staking fee for frontend to create transaction
    */
   createStakingTransaction = async (req, res) => {
     try {
-      const { walletAddress } = req.body;
+      const config = this.solanaService.rewardAddress ? {
+        rewardAddress: this.solanaService.rewardAddress,
+        stakingFee: 0.001,
+        message: 'Use this reward address to create the staking transaction on the frontend',
+      } : null;
 
-      if (!walletAddress) {
-        return res.status(400).json({
+      if (!config) {
+        return res.status(500).json({
           success: false,
-          error: 'Wallet address is required',
+          error: 'Reward address not configured',
         });
       }
 
-      const transaction = await this.solanaService.createStakingTransaction(walletAddress);
-      const serialized = this.solanaService.serializeTransaction(transaction);
-
       res.json({
         success: true,
-        data: {
-          transaction: {
-            serialized: serialized.toString('base64'),
-            message: 'Staking transaction created. Sign and submit to stake.',
-            amount: 0.001, // SOL
-          },
-        },
+        data: config,
       });
     } catch (error) {
       res.status(400).json({

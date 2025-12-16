@@ -40,7 +40,7 @@ export class StakingService {
   }
 
   /**
-   * Unstakes NFTs (marks stake as inactive)
+   * Unstakes NFTs (removes the staking record from database)
    * @param {string} walletAddress - User's wallet address
    * @returns {Promise<Object>}
    */
@@ -49,47 +49,72 @@ export class StakingService {
       throw new Error('Wallet address is required');
     }
 
-    const record = await this.repository.findByWalletAddress(walletAddress);
-    if (!record || !record.isActive) {
+    // Find active stake (there should only be one)
+    const activeStakes = await this.repository.findActiveByWalletAddress(walletAddress);
+    if (activeStakes.length === 0) {
       throw new Error('No active stake found for this wallet');
     }
 
-    const updated = await this.repository.update(walletAddress, {
-      isActive: false,
-    });
+    // Get the most recent active stake (should be the only one)
+    const record = activeStakes[activeStakes.length - 1];
 
-    if (!updated) {
-      throw new Error('Failed to update stake record');
+    // Delete the record from the database
+    const deleted = await this.repository.delete(walletAddress, record.transactionSignature);
+    
+    if (!deleted) {
+      throw new Error('Failed to delete stake record');
     }
 
-    return updated;
+    return { message: 'Stake record deleted successfully', deletedRecord: record };
   }
 
   /**
-   * Claims rewards (creates reward transaction)
+   * Claims rewards (updates staking record)
+   * Note: In production, you'd need the reward address private key to send SOL
+   * For this demo, we just update the backend record
    * @param {string} walletAddress - User's wallet address
-   * @returns {Promise<Transaction>}
+   * @returns {Promise<StakingRecord>}
    */
   async claimRewards(walletAddress) {
     if (!walletAddress) {
       throw new Error('Wallet address is required');
     }
 
-    const record = await this.repository.findByWalletAddress(walletAddress);
-    if (!record || !record.isActive) {
+    // Find active stake
+    const activeStakes = await this.repository.findActiveByWalletAddress(walletAddress);
+    if (activeStakes.length === 0) {
       throw new Error('No active stake found for this wallet');
     }
 
-    // Create reward transaction
-    const transaction = await this.solanaService.createRewardTransaction(walletAddress);
+    const record = activeStakes[activeStakes.length - 1];
 
-    // Update last claim timestamp
-    await this.repository.update(walletAddress, {
-      lastClaimTimestamp: Date.now(),
-      claimedRewards: (record.claimedRewards || 0) + 0.0005,
-    });
+    // Calculate pending rewards
+    const rewards = await this.getPendingRewards(walletAddress);
 
-    return transaction;
+    // Update the specific active record
+    const records = await this.repository.readAll();
+    let updatedRecord = null;
+    
+    for (let i = 0; i < records.length; i++) {
+      if (records[i].walletAddress === walletAddress && 
+          records[i].isActive === true &&
+          records[i].transactionSignature === record.transactionSignature) {
+        records[i] = {
+          ...records[i],
+          lastClaimTimestamp: Date.now(),
+          claimedRewards: (record.claimedRewards || 0) + rewards.pendingRewards,
+        };
+        updatedRecord = records[i];
+        break;
+      }
+    }
+    
+    if (!updatedRecord) {
+      throw new Error('Stake record not found');
+    }
+
+    await this.repository.writeAll(records);
+    return updatedRecord;
   }
 
   /**
@@ -102,8 +127,9 @@ export class StakingService {
       throw new Error('Wallet address is required');
     }
 
-    const record = await this.repository.findByWalletAddress(walletAddress);
-    if (!record || !record.isActive) {
+    // Find active stake
+    const activeStakes = await this.repository.findActiveByWalletAddress(walletAddress);
+    if (activeStakes.length === 0) {
       return {
         walletAddress,
         pendingRewards: 0,
@@ -111,6 +137,9 @@ export class StakingService {
         isActive: false,
       };
     }
+
+    // Get the most recent active stake
+    const record = activeStakes[activeStakes.length - 1];
 
     // Calculate pending rewards based on time elapsed
     const now = Date.now();
@@ -138,7 +167,9 @@ export class StakingService {
       throw new Error('Wallet address is required');
     }
 
-    const record = await this.repository.findByWalletAddress(walletAddress);
+    // Find active stake
+    const activeStakes = await this.repository.findActiveByWalletAddress(walletAddress);
+    const record = activeStakes.length > 0 ? activeStakes[activeStakes.length - 1] : null;
     const rewards = await this.getPendingRewards(walletAddress);
 
     return {

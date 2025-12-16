@@ -8,7 +8,8 @@
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "start:bg": "node src/server.js > server.log 2>&1 &"
   },
   "keywords": [],
   "author": "",
